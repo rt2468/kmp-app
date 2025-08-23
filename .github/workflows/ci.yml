@@ -1,4 +1,4 @@
-name: KMP CI Pipeline
+name: Kmp CI Pipeline
 
 on:
   push:
