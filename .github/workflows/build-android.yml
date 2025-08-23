@@ -20,5 +20,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 21
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - name: Android debug build
         run: ./gradlew assembleDebug --stacktrace
