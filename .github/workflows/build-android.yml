@@ -11,7 +11,7 @@ jobs:
     name: Build
     runs-on: macOS-latest
     # Only run build in template repo
-    if: github.event.repository.name == 'KMP-App-Template-Native' && github.repository_owner == 'Kotlin'
+    if: github.event.repository.name == 'kmp-app'
     steps:
       - name: Check out code
         uses: actions/checkout@v4
