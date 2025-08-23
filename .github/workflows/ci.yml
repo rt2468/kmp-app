@@ -31,9 +31,10 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}-
-
-      - name: Grant execute permission to Gradle
-        run: chmod +x ./gradlew
+      
+      # You can keep this here, but it's not strictly necessary for the other jobs if you add it to them
+      # - name: Grant execute permission to Gradle
+      #   run: chmod +x ./gradlew
 
   lint:
     name: Run Lint
@@ -41,6 +42,9 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
+
+      - name: Grant execute permission to Gradle
+        run: chmod +x ./gradlew
 
       - name: Run Ktlint
         run: ./gradlew ktlintCheck
@@ -52,6 +56,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Grant execute permission to Gradle
+        run: chmod +x ./gradlew
+
       - name: Run Unit Tests
         run: ./gradlew allTests
 
@@ -61,6 +68,9 @@ jobs:
     needs: [setup, lint, test]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Grant execute permission to Gradle
+        run: chmod +x ./gradlew
 
       - name: Build Android App
         run: ./gradlew :androidApp:assembleDebug
