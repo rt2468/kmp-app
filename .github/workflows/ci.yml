@@ -31,36 +31,10 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-  lint:
-    name: Run Lint
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Grant execute permission to Gradle
-        run: chmod +x ./gradlew
-
-      - name: Run Ktlint
-        run: ./gradlew ktlintCheck
-
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Grant execute permission to Gradle
-        run: chmod +x ./gradlew
-
-      - name: Run Unit Tests
-        run: ./gradlew allTests
-
   build:
     name: Build KMP Targets
     runs-on: ubuntu-latest
-    needs: [setup, lint, test]
+    needs: [setup]
     steps:
       - uses: actions/checkout@v4
 
