@@ -25,7 +25,13 @@ jobs:
       - name: Android debug build
         run: ./gradlew assembleDebug --stacktrace
       - name: Upload APK artifact
+        run: |
+          find . -name "*.apk" -type f
+          echo "Using path: composeApp/build/outputs/apk/debug/*.apk"
+        continue-on-error: true
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: android-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: composeApp/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
