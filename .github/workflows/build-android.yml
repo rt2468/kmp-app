@@ -27,14 +27,25 @@ jobs:
           name: android-debug-apk
           path: composeApp/build/outputs/apk/debug/*.apk
           if-no-files-found: warn
-      - name: Upload to KaneAI
+     
+      - name: Upload to LambdaTest
         env:
           LAMBDATEST_USERNAME: ${{ secrets.LAMBDATEST_USERNAME }}
           LAMBDATEST_ACCESS_KEY: ${{ secrets.LAMBDATEST_ACCESS_KEY }}
         run: |
+          echo "🔎 Using LambdaTest Username: $LAMBDATEST_USERNAME"
+          
           APK_FILE=$(find composeApp/build/outputs/apk/debug -name "*.apk" | head -n 1)
-          curl -X POST "https://manual-api.lambdatest.com/app/uploadFramework" \
-            -H "Authorization: Basic $(echo -n $LAMBDATEST_USERNAME:$LAMBDATEST_ACCESS_KEY | base64)" \
+          if [ -z "$APK_FILE" ]; then
+            echo "❌ No APK file found!"
+            exit 1
+          fi
+          
+          AUTH=$(echo -n "$LAMBDATEST_USERNAME:$LAMBDATEST_ACCESS_KEY" | base64)
+          
+          echo "⬆️ Uploading $APK_FILE to LambdaTest..."
+          curl --fail -X POST "https://manual-api.lambdatest.com/app/upload/realDevice" \
+            -H "Authorization: Basic $AUTH" \
             -F "appFile=@$APK_FILE" \
-            -F "name=$(basename $APK_FILE)" \
-            -F "type=android"
+            -F "name=MyApp"
+
